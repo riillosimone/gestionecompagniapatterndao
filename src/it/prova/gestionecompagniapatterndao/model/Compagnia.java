@@ -16,16 +16,16 @@ public class Compagnia {
 	public Compagnia() {
 	}
 
-	
+
+	public Compagnia(String ragioneSociale) {
+		this.ragioneSociale = ragioneSociale;
+	}
 	public Compagnia(Long id, String ragioneSociale) {
 		this.id = id;
 		this.ragioneSociale = ragioneSociale;
 	}
 
 
-	public Compagnia(String ragioneSociale) {
-		this.ragioneSociale = ragioneSociale;
-	}
 
 	public Compagnia(String ragioneSociale, int fatturatoAnnuo) {
 		this.ragioneSociale = ragioneSociale;
@@ -83,7 +83,7 @@ public class Compagnia {
 	public String toString() {
 		String dataFondazioneString = dataFondazione != null ? DateTimeFormatter.ofPattern("dd/MM/yyyy").format(dataFondazione)
 				: " N.D.";
-		return "Compagnia [id=" + id + ", ragioneSociale=" + ragioneSociale + ", fatturatoAnnuo=" + fatturatoAnnuo
+		return "Compagnia [id=" + this.id + ", ragioneSociale=" + ragioneSociale + ", fatturatoAnnuo=" + fatturatoAnnuo
 				+ ", dataFondazione=" + dataFondazioneString + "]";
 	}
 	

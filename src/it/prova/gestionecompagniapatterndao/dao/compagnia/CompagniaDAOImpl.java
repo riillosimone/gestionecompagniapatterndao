@@ -12,11 +12,11 @@ import it.prova.gestionecompagniapatterndao.dao.AbstractMySQLDAO;
 import it.prova.gestionecompagniapatterndao.model.Compagnia;
 
 public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
-	
+
 	public CompagniaDAOImpl(Connection connection) {
 		super(connection);
 	}
-	
+
 	public List<Compagnia> list() throws Exception {
 		// controllo per connessione attiva
 		if (isNotActive())
@@ -123,11 +123,10 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 		// controllo per connessione attiva
 		if (isNotActive())
 			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
-		if (input == null  || input.getId() == null || input.getId() < 1)
+		if (input == null || input.getId() == null || input.getId() < 1)
 			throw new Exception("Valore di input non ammesso.");
 		int result = 0;
-		try (PreparedStatement ps = connection.prepareStatement(
-				"delete from compagnia where id=?;")) {
+		try (PreparedStatement ps = connection.prepareStatement("delete from compagnia where id=?;")) {
 			ps.setLong(1, input.getId());
 			result = ps.executeUpdate();
 		} catch (Exception e) {
@@ -145,20 +144,23 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 		if (input == null)
 			throw new Exception("Valore di input non ammesso.");
 		List<Compagnia> result = new ArrayList<>();
-		String query ="select * from compagnia where id is not null ";
-		if(input.getRagioneSociale() != null && !input.getRagioneSociale().isEmpty()) {
-			query += " and ragionesociale like '" + input.getRagioneSociale()+"%'";
-		}
-		if(input.getFatturatoAnnuo()>=0) {
-			query += "and fatturatoannuo= '"+input.getFatturatoAnnuo()+"' ";
-		}
-		if(input.getDataFondazione()!=null) {
-			query += "and datafondazione= '"+java.sql.Date.valueOf(input.getDataFondazione()+"'");
-		}	
-		try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery(query)) {
+		Compagnia compagniaTemp = null;
 
+		String query = "select * from compagnia where id is not null ";
+		if (input.getRagioneSociale() != null && !input.getRagioneSociale().isEmpty()) {
+			query += " and ragionesociale like '" + input.getRagioneSociale() + "%' ";
+		}
+		if (input.getFatturatoAnnuo() >= 0) {
+			query += " and fatturatoannuo > '" + input.getFatturatoAnnuo() + "' ";
+		}
+		if (input.getDataFondazione() != null) {
+			query += " and datafondazione= '" + java.sql.Date.valueOf(input.getDataFondazione() + "' ");
+		}
+		try (Statement ps = connection.createStatement()) {
+			ResultSet rs = ps.executeQuery(query);
+			
 			while (rs.next()) {
-				Compagnia compagniaTemp = new Compagnia();
+				compagniaTemp = new Compagnia();
 				compagniaTemp.setRagioneSociale(rs.getString("ragionesociale"));
 				compagniaTemp.setFatturatoAnnuo(rs.getInt("fatturatoannuo"));
 				compagniaTemp.setDataFondazione(

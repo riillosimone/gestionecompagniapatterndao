@@ -133,7 +133,7 @@ public class Impiegato {
 				: " N.D.";
 		String dataAssunzioneString = dataAssunzione != null ? DateTimeFormatter.ofPattern("dd/MM/yyyy").format(dataAssunzione)
 				: " N.D.";
-		return "Impiegato [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", codiceFiscale=" + codiceFiscale
+		return "Impiegato [id=" + this.id + ", nome=" + nome + ", cognome=" + cognome + ", codiceFiscale=" + codiceFiscale
 				+ ", dataNascita=" + dataNascitaString + ", dataAssunzione=" + dataAssunzioneString + ", compagnia=" + compagnia
 				+ "]";
 	}
