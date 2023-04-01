@@ -11,21 +11,19 @@ public class Compagnia {
 	private int fatturatoAnnuo;
 	private LocalDate dataFondazione;
 	private List<Impiegato> impiegati = new ArrayList<>();
-	
-	//costruttori
+
+	// costruttori
 	public Compagnia() {
 	}
-
 
 	public Compagnia(String ragioneSociale) {
 		this.ragioneSociale = ragioneSociale;
 	}
+
 	public Compagnia(Long id, String ragioneSociale) {
 		this.id = id;
 		this.ragioneSociale = ragioneSociale;
 	}
-
-
 
 	public Compagnia(String ragioneSociale, int fatturatoAnnuo) {
 		this.ragioneSociale = ragioneSociale;
@@ -38,7 +36,7 @@ public class Compagnia {
 		this.dataFondazione = dataFondazione;
 	}
 
-	//get e set
+	// get e set
 	public Long getId() {
 		return id;
 	}
@@ -81,13 +79,11 @@ public class Compagnia {
 
 	@Override
 	public String toString() {
-		String dataFondazioneString = dataFondazione != null ? DateTimeFormatter.ofPattern("dd/MM/yyyy").format(dataFondazione)
+		String dataFondazioneString = dataFondazione != null
+				? DateTimeFormatter.ofPattern("dd/MM/yyyy").format(dataFondazione)
 				: " N.D.";
 		return "Compagnia [id=" + this.id + ", ragioneSociale=" + ragioneSociale + ", fatturatoAnnuo=" + fatturatoAnnuo
-				+" data fondazione="+dataFondazioneString +"]";
+				+ " data fondazione=" + dataFondazioneString + "]";
 	}
-	
-	
-	
-	
+
 }

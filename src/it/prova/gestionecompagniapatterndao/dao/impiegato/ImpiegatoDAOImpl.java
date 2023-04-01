@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import it.prova.gestionecompagniapatterndao.dao.AbstractMySQLDAO;
@@ -37,14 +39,14 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 						rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
 				impiegatoTemp.setDataAssunzione(
 						rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
-				impiegatoTemp.setId(rs.getLong("ID"));
+				impiegatoTemp.setId(rs.getLong("i.ID"));
 
 				Compagnia compagniaTemp = new Compagnia();
 				compagniaTemp.setRagioneSociale(rs.getString("ragionesociale"));
 				compagniaTemp.setFatturatoAnnuo(rs.getInt("fatturatoannuo"));
 				compagniaTemp.setDataFondazione(
 						rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
-				compagniaTemp.setId(rs.getLong("ID"));
+				compagniaTemp.setId(rs.getLong("c.ID"));
 
 				impiegatoTemp.setCompagnia(compagniaTemp);
 				result.add(impiegatoTemp);
@@ -179,80 +181,201 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 	@Override
 	public List<Impiegato> findByExample(Impiegato input) throws Exception {
 		// controllo per connessione attiva
-				if (isNotActive())
-					throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
-				if (input == null)
-					throw new Exception("Valore di input non ammesso.");
-				List<Impiegato> result = new ArrayList<>();
-				Impiegato impiegatoTemp = null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+		if (input == null)
+			throw new Exception("Valore di input non ammesso.");
+		List<Impiegato> result = new ArrayList<>();
+		Impiegato impiegatoTemp = null;
 
-				String query = "select * from impiegato where id is not null ";
-				if (input.getNome() != null && !input.getNome().isEmpty()) {
-					query += " and nome like '" + input.getNome() + "%' ";
-				}
-				if (input.getCognome() != null && !input.getCognome().isEmpty()) {
-					query += " and cognome like '" + input.getCognome() + "%' ";
-				}
-				if (input.getCodiceFiscale() != null && !input.getCodiceFiscale().isEmpty()) {
-					query += " and codicefiscale like '" + input.getCodiceFiscale() + "%' ";
-				}
-				if (input.getCodiceFiscale() != null && !input.getCodiceFiscale().isEmpty()) {
-					query += " and codicefiscale like '" + input.getCodiceFiscale() + "%' ";
-				}
-				if (input.getDataNascita() != null) {
-					query += " and datanascita= '" + java.sql.Date.valueOf(input.getDataNascita() + "' ");
-				}
-				if (input.getDataAssunzione() != null) {
-					query += " and dataassunzione= '" + java.sql.Date.valueOf(input.getDataAssunzione() + "' ");
-				}
-				if (input.getCompagnia().getId() != null && input.getCompagnia().getId()<1) {
-					query += " and codicefiscale like '" + input.getCodiceFiscale() + "%' ";
-				}
-				try (Statement ps = connection.createStatement()) {
-					ResultSet rs = ps.executeQuery(query);
-					
-					while (rs.next()) {
-						impiegatoTemp = new Impiegato();
-						impiegatoTemp.setNome(rs.getString("nome"));
-						impiegatoTemp.setCognome(rs.getString("cognome"));
-						impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
-						impiegatoTemp.setDataNascita(
-								rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
-						impiegatoTemp.setDataAssunzione(
-								rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
-						impiegatoTemp.setId(rs.getLong("ID"));
-						result.add(impiegatoTemp);
-					}
+		String query = "select * from impiegato where id is not null ";
+		if (input.getNome() != null && !input.getNome().isEmpty()) {
+			query += " and nome like '" + input.getNome() + "%' ";
+		}
+		if (input.getCognome() != null && !input.getCognome().isEmpty()) {
+			query += " and cognome like '" + input.getCognome() + "%' ";
+		}
+		if (input.getCodiceFiscale() != null && !input.getCodiceFiscale().isEmpty()) {
+			query += " and codicefiscale like '" + input.getCodiceFiscale() + "%' ";
+		}
+		if (input.getDataNascita() != null) {
+			query += " and datanascita= '" + java.sql.Date.valueOf(input.getDataNascita() + "' ");
+		}
+		if (input.getDataAssunzione() != null) {
+			query += " and dataassunzione= '" + java.sql.Date.valueOf(input.getDataAssunzione() + "' ");
+		}
+		if (input.getCompagnia() != null && input.getCompagnia().getId() != null && input.getCompagnia().getId() > 1) {
+			query += " and compagnia_id= " + input.getCompagnia().getId() + " ";
+		}
+		try (Statement ps = connection.createStatement()) {
+			ResultSet rs = ps.executeQuery(query);
 
-				} catch (Exception e) {
-					e.printStackTrace();
-					throw e;
-				}
-				return result;
+			while (rs.next()) {
+				impiegatoTemp = new Impiegato();
+				impiegatoTemp.setNome(rs.getString("nome"));
+				impiegatoTemp.setCognome(rs.getString("cognome"));
+				impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
+				impiegatoTemp.setDataNascita(
+						rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
+				impiegatoTemp.setDataAssunzione(
+						rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
+				impiegatoTemp.setId(rs.getLong("ID"));
+				result.add(impiegatoTemp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
 	public List<Impiegato> findAllByCompagnia(Compagnia compagnia) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+		List<Impiegato> result = new ArrayList<>();
+
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select * from impiegato i inner join compagnia c on c.id=i.compagnia_id where i.compagnia_id=?;")) {
+
+			ps.setLong(1, compagnia.getId());
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Impiegato impiegatoTemp = new Impiegato();
+				impiegatoTemp.setNome(rs.getString("nome"));
+				impiegatoTemp.setCognome(rs.getString("cognome"));
+				impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
+				impiegatoTemp.setDataNascita(
+						rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
+				impiegatoTemp.setDataAssunzione(
+						rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
+				impiegatoTemp.setId(rs.getLong("i.ID"));
+
+				Compagnia compagniaTemp = new Compagnia();
+				compagniaTemp.setRagioneSociale(rs.getString("ragionesociale"));
+				compagniaTemp.setFatturatoAnnuo(rs.getInt("fatturatoannuo"));
+				compagniaTemp.setDataFondazione(
+						rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
+				compagniaTemp.setId(rs.getLong("c.ID"));
+
+				impiegatoTemp.setCompagnia(compagniaTemp);
+				result.add(impiegatoTemp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
 	public int countByDataFondazioneCompagniaGreaterThan(LocalDate data) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+		if (data == null)
+			throw new Exception("Valore di input non ammesso.");
+		int result = 0;
+//		ZoneId defaultZoneId = ZoneId.systemDefault();
+//		Date dataCambiata = Date.from(data.atStartOfDay(defaultZoneId).toInstant());
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select count(datafondazione) from impiegato i inner join compagnia c on c.id=i.compagnia_id where datafondazione > ?")) {
+
+			ps.setDate(1, java.sql.Date.valueOf(data));
+
+			try (ResultSet rs = ps.executeQuery()) {
+
+				if (rs.next()) {
+					result = rs.getInt("count(datafondazione)");
+
+				}
+			} // niente catch
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
 	public List<Impiegato> findAllByCompagniaConFatturatoMaggioreDi(int fatturatoInput) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+		List<Impiegato> result = new ArrayList<>();
+
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select * from impiegato i inner join compagnia c on c.id=i.compagnia_id where c.fatturatoannuo > ?;")) {
+
+			ps.setInt(1, fatturatoInput);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Impiegato impiegatoTemp = new Impiegato();
+				impiegatoTemp.setNome(rs.getString("nome"));
+				impiegatoTemp.setCognome(rs.getString("cognome"));
+				impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
+				impiegatoTemp.setDataNascita(
+						rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
+				impiegatoTemp.setDataAssunzione(
+						rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
+				impiegatoTemp.setId(rs.getLong("i.ID"));
+
+				Compagnia compagniaTemp = new Compagnia();
+				compagniaTemp.setRagioneSociale(rs.getString("ragionesociale"));
+				compagniaTemp.setFatturatoAnnuo(rs.getInt("fatturatoannuo"));
+				compagniaTemp.setDataFondazione(
+						rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
+				compagniaTemp.setId(rs.getLong("c.ID"));
+
+				impiegatoTemp.setCompagnia(compagniaTemp);
+				result.add(impiegatoTemp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 	@Override
 	public List<Impiegato> findAllErroriAssunzione() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		if (isNotActive())
+			throw new Exception("Connessione non attiva. Impossibile effettuare operazioni DAO.");
+		List<Impiegato> result = new ArrayList<>();
+
+		try (PreparedStatement ps = connection.prepareStatement(
+				"select * from impiegato i inner join compagnia c on c.id=i.compagnia_id where c.datafondazione > i.dataassunzione;")) {
+
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Impiegato impiegatoTemp = new Impiegato();
+				impiegatoTemp.setNome(rs.getString("nome"));
+				impiegatoTemp.setCognome(rs.getString("cognome"));
+				impiegatoTemp.setCodiceFiscale(rs.getString("codicefiscale"));
+				impiegatoTemp.setDataNascita(
+						rs.getDate("datanascita") != null ? rs.getDate("datanascita").toLocalDate() : null);
+				impiegatoTemp.setDataAssunzione(
+						rs.getDate("dataassunzione") != null ? rs.getDate("dataassunzione").toLocalDate() : null);
+				impiegatoTemp.setId(rs.getLong("i.ID"));
+
+				Compagnia compagniaTemp = new Compagnia();
+				compagniaTemp.setRagioneSociale(rs.getString("ragionesociale"));
+				compagniaTemp.setFatturatoAnnuo(rs.getInt("fatturatoannuo"));
+				compagniaTemp.setDataFondazione(
+						rs.getDate("datafondazione") != null ? rs.getDate("datafondazione").toLocalDate() : null);
+				compagniaTemp.setId(rs.getLong("c.ID"));
+
+				impiegatoTemp.setCompagnia(compagniaTemp);
+				result.add(impiegatoTemp);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return result;
 	}
 
 }
