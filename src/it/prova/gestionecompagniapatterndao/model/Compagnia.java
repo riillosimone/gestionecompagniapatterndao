@@ -84,7 +84,7 @@ public class Compagnia {
 		String dataFondazioneString = dataFondazione != null ? DateTimeFormatter.ofPattern("dd/MM/yyyy").format(dataFondazione)
 				: " N.D.";
 		return "Compagnia [id=" + this.id + ", ragioneSociale=" + ragioneSociale + ", fatturatoAnnuo=" + fatturatoAnnuo
-				+ ", dataFondazione=" + dataFondazioneString + "]";
+				+" data fondazione="+dataFondazioneString +"]";
 	}
 	
 	

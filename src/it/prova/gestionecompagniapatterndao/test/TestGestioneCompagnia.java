@@ -32,7 +32,7 @@ public class TestGestioneCompagnia {
 
 //			testGetCompagnia(compagniaDAOInstance);
 //			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
-//
+
 //			System.out.println(compagniaDAOInstance.list());
 //			TestUpdateCompagnia(compagniaDAOInstance);
 //			System.out.println(compagniaDAOInstance.list());
@@ -51,8 +51,8 @@ public class TestGestioneCompagnia {
 //			testGetImpiegato(impiegatoDAOInstance);
 //			System.out.println("In tabella compagnia ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
 
-//			TestUpdateImpiegato(impiegatoDAOInstance, compagniaDAOInstance);
-//			System.out.println("In tabella compagnia ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
+			TestUpdateImpiegato(impiegatoDAOInstance, compagniaDAOInstance);
+			System.out.println("In tabella compagnia ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
 
 			
 			
@@ -95,7 +95,7 @@ public class TestGestioneCompagnia {
 		if (elencoVociPresenti.size() < 1)
 			throw new RuntimeException("testGetCompagnia : FAILED, non ci sono voci sul DB");
 		Compagnia compagniaDaAggiornare = elencoVociPresenti.get(0);
-		String nuovoNomeCompagnia = "Oracle";
+		String nuovoNomeCompagnia = "franco";
 		System.out.println("...before update: " + compagniaDaAggiornare);
 		compagniaDaAggiornare.setRagioneSociale(nuovoNomeCompagnia);
 		compagniaDAOInstance.update(compagniaDaAggiornare);
@@ -184,8 +184,9 @@ public class TestGestioneCompagnia {
 			throw new RuntimeException("TestUpdateImpiegato : FAILED, non ci sono impiegati sul DB");
 		
 		Impiegato impiegatoDaAggiornare = elencoImpiegatiPresenti.get(1);
-		String nuovoNomeImpiegato = "Mario";
-		Compagnia nuovaCompagniaDaAssegnare = elencoCompagniePresenti.get(1);
+		String nuovoNomeImpiegato = "MArio";
+		Compagnia nuovaCompagniaDaAssegnare = elencoCompagniePresenti.get(2);
+		System.out.println(nuovaCompagniaDaAssegnare);
 		System.out.println("...before update: " + impiegatoDaAggiornare);
 		impiegatoDaAggiornare.setNome(nuovoNomeImpiegato);
 		impiegatoDaAggiornare.setCompagnia(nuovaCompagniaDaAssegnare);
@@ -195,8 +196,6 @@ public class TestGestioneCompagnia {
 		System.out.println("...after update: " + impiegatoAggiornato);
 		if (impiegatoAggiornato == null || !impiegatoAggiornato.getNome().equals(nuovoNomeImpiegato))
 			throw new RuntimeException("TestUpdateImpiegato : FAILED");
-		System.out.println(impiegatoDaAggiornare.getCompagnia().getId());
-		System.out.println(impiegatoAggiornato.getCompagnia().getId());
 		System.out.println(".......TestUpdateImpiegato fine: PASSED......");
 		//problemi con update (Cambia le date in auomatico. Succede anche con testNegozio)
 	}

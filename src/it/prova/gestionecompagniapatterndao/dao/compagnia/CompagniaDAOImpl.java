@@ -26,6 +26,7 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 		try (Statement ps = connection.createStatement(); ResultSet rs = ps.executeQuery("select * from compagnia")) {
 
 			while (rs.next()) {
+				LocalDate data=rs.getDate("datafondazione").toLocalDate(); 
 				Compagnia compagniaTemp = new Compagnia();
 				compagniaTemp.setRagioneSociale(rs.getString("ragionesociale"));
 				compagniaTemp.setFatturatoAnnuo(rs.getInt("fatturatoannuo"));
