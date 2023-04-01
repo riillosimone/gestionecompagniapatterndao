@@ -8,7 +8,7 @@ import java.util.List;
 public class Compagnia {
 	private Long id;
 	private String ragioneSociale;
-	private Long fatturatoAnnuo;
+	private int fatturatoAnnuo;
 	private LocalDate dataFondazione;
 	private List<Impiegato> impiegati = new ArrayList<>();
 	
@@ -16,11 +16,23 @@ public class Compagnia {
 	public Compagnia() {
 	}
 
+	
+	public Compagnia(Long id, String ragioneSociale) {
+		this.id = id;
+		this.ragioneSociale = ragioneSociale;
+	}
+
+
 	public Compagnia(String ragioneSociale) {
 		this.ragioneSociale = ragioneSociale;
 	}
 
-	public Compagnia(String ragioneSociale, Long fatturatoAnnuo, LocalDate dataFondazione) {
+	public Compagnia(String ragioneSociale, int fatturatoAnnuo) {
+		this.ragioneSociale = ragioneSociale;
+		this.fatturatoAnnuo = fatturatoAnnuo;
+	}
+
+	public Compagnia(String ragioneSociale, int fatturatoAnnuo, LocalDate dataFondazione) {
 		this.ragioneSociale = ragioneSociale;
 		this.fatturatoAnnuo = fatturatoAnnuo;
 		this.dataFondazione = dataFondazione;
@@ -43,11 +55,11 @@ public class Compagnia {
 		this.ragioneSociale = ragioneSociale;
 	}
 
-	public Long getFatturatoAnnuo() {
+	public int getFatturatoAnnuo() {
 		return fatturatoAnnuo;
 	}
 
-	public void setFatturatoAnnuo(Long fatturatoAnnuo) {
+	public void setFatturatoAnnuo(int fatturatoAnnuo) {
 		this.fatturatoAnnuo = fatturatoAnnuo;
 	}
 
