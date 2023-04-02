@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import it.prova.gestionecompagniapatterndao.dao.AbstractMySQLDAO;
@@ -277,8 +275,6 @@ public class ImpiegatoDAOImpl extends AbstractMySQLDAO implements ImpiegatoDAO {
 		if (data == null)
 			throw new Exception("Valore di input non ammesso.");
 		int result = 0;
-//		ZoneId defaultZoneId = ZoneId.systemDefault();
-//		Date dataCambiata = Date.from(data.atStartOfDay(defaultZoneId).toInstant());
 		try (PreparedStatement ps = connection.prepareStatement(
 				"select count(datafondazione) from impiegato i inner join compagnia c on c.id=i.compagnia_id where datafondazione > ?")) {
 

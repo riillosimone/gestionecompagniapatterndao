@@ -43,6 +43,19 @@ public class TestGestioneCompagnia {
 
 //			testFindByExample(compagniaDAOInstance);
 //			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
+			
+			
+//			TEST METODI COMPAGNIA IMPLEMENTATI
+			testFindAllByDataAssunzioneMaggioreDi(compagniaDAOInstance,impiegatoDAOInstance);
+			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
+			
+			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
+			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
+			
+			testFindAllByCodFisImpiegatoContiene(compagniaDAOInstance,impiegatoDAOInstance);
+			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
+			
+			
 
 			// TEST CRUD IMPIEGATO
 //			testInsertImpiegato(compagniaDAOInstance, impiegatoDAOInstance);
@@ -57,14 +70,18 @@ public class TestGestioneCompagnia {
 //			testFindByExampleImpiegato(impiegatoDAOInstance);
 //			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
 
-//			testFindAllByCompagnia(impiegatoDAOInstance, compagniaDAOInstance);
-//			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
+			
+			
+			//TEST METODI IMPIEGATO IMPLEMENTATI
+			
+			testFindAllByCompagnia(impiegatoDAOInstance, compagniaDAOInstance);
+			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
 
-//			testCountByDataFondazioneCompagniaGreaterThan(impiegatoDAOInstance, compagniaDAOInstance);
-//			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
+			testCountByDataFondazioneCompagniaGreaterThan(impiegatoDAOInstance, compagniaDAOInstance);
+			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
 
-//			testFindAllByCompagniaConFatturatoMaggioreDi(impiegatoDAOInstance, compagniaDAOInstance);
-//			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
+			testFindAllByCompagniaConFatturatoMaggioreDi(impiegatoDAOInstance, compagniaDAOInstance);
+			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
 
 			testFindAllErroriAssunzione(impiegatoDAOInstance, compagniaDAOInstance);
 			System.out.println("In tabella impiegato ci sono " + impiegatoDAOInstance.list().size() + " elementi.");
@@ -152,7 +169,73 @@ public class TestGestioneCompagnia {
 		System.out.println(listaCompagniaLikeExample);
 		System.out.println(".......testFindByExample fine: PASSED.............");
 	}
+	
+	private static void testFindAllByDataAssunzioneMaggioreDi(CompagniaDAO compagniaDAOInstance,ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testFindAllByDataAssunzioneMaggioreDi inizio......");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAOInstance.list();
+		if (elencoCompagniePresenti.size() < 1)
+			throw new RuntimeException("testFindAllByDataAssunzioneMaggioreDi : FAILED, non ci sono compagnia sul DB");
+		List<Impiegato> elencoImpiegatiPresenti = impiegatoDAOInstance.list();
+		if (elencoImpiegatiPresenti.size() < 1)
+			throw new RuntimeException("testFindAllByDataAssunzioneMaggioreDi : FAILED, non ci sono impiegati sul DB");
+		
+		LocalDate dataDaRicercare = LocalDate.parse("2000-01-01");
+		List<Compagnia> listaCompagniaLikeExample = compagniaDAOInstance.findAllByDataAssunzioneMaggioreDi(dataDaRicercare);
+		if (listaCompagniaLikeExample.size() < 1) {
+			throw new RuntimeException("testFindAllByDataAssunzioneMaggioreDi : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("Gli elementi della lista sono: " + listaCompagniaLikeExample.size());
+		System.out.println(listaCompagniaLikeExample);
+		System.out.println(".......testFindAllByDataAssunzioneMaggioreDi fine: PASSED.............");
+	}
 
+	private static void testFindAllByRagioneSocialeContiene(CompagniaDAO compagniaDAOInstance) throws Exception {
+		System.out.println(".......testFindAllByRagioneSocialeContiene inizio......");
+		List<Compagnia> elencoVociPresenti = compagniaDAOInstance.list();
+		if (elencoVociPresenti.size() < 1)
+			throw new RuntimeException("testFindAllByRagioneSocialeContiene : FAILED, non ci sono voci sul DB");
+		String ragioneSocialeContiene = "ome";
+		List<Compagnia> listaCompagniaLikeExample = compagniaDAOInstance.findAllByRagioneSocialeContiene(ragioneSocialeContiene);
+		if (listaCompagniaLikeExample.size() < 1) {
+			throw new RuntimeException("testFindAllByRagioneSocialeContiene : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("Gli elementi della lista sono: " + listaCompagniaLikeExample.size());
+		System.out.println(listaCompagniaLikeExample);
+		System.out.println(".......testFindAllByRagioneSocialeContiene fine: PASSED.............");
+	}
+	
+	private static void testFindAllByCodFisImpiegatoContiene (CompagniaDAO compagniaDAOInstance,ImpiegatoDAO impiegatoDAOInstance) throws Exception {
+		System.out.println(".......testFindAllByCodFisImpiegatoContiene inizio......");
+		List<Compagnia> elencoCompagniePresenti = compagniaDAOInstance.list();
+		if (elencoCompagniePresenti.size() < 1)
+			throw new RuntimeException("testFindAllByCodFisImpiegatoContiene : FAILED, non ci sono compagnia sul DB");
+		List<Impiegato> elencoImpiegatiPresenti = impiegatoDAOInstance.list();
+		if (elencoImpiegatiPresenti.size() < 1)
+			throw new RuntimeException("testFindAllByCodFisImpiegatoContiene : FAILED, non ci sono impiegati sul DB");
+		
+		String codFisDaCercare = "h501";
+		List<Compagnia> listaCompagniaLikeExample = compagniaDAOInstance.findAllByCodFisImpiegatoContiene(codFisDaCercare);
+		if (listaCompagniaLikeExample.size() < 1) {
+			throw new RuntimeException("testFindAllByCodFisImpiegatoContiene : FAILED, non ci sono voci sul DB");
+		}
+		System.out.println("Gli elementi della lista sono: " + listaCompagniaLikeExample.size());
+		System.out.println(listaCompagniaLikeExample);
+		System.out.println(".......testFindAllByCodFisImpiegatoContiene fine: PASSED.............");
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// METODI TEST CRUD IMPIEGATO
 	private static void testInsertImpiegato(CompagniaDAO compagniaDAOInstance, ImpiegatoDAO impiegatoDAOInstance)
 			throws Exception {
