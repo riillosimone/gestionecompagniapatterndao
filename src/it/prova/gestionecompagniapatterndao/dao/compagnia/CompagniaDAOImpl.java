@@ -183,7 +183,7 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 			throw new Exception("Valore di input non ammesso.");
 		List<Compagnia> result = new ArrayList<>();
 		try (PreparedStatement ps = connection.prepareStatement(
-				"select distinct c.id,ragionesociale,fatturatoannuo,datafondazione from compagnia c inner join impiegato i on c.id=i.compagnia_id where dataassunzione > ?;")) {
+				"select distinct c.* from compagnia c inner join impiegato i on c.id=i.compagnia_id where dataassunzione > ?;")) {
 
 			ps.setDate(1, java.sql.Date.valueOf(data));
 
@@ -248,7 +248,7 @@ public class CompagniaDAOImpl extends AbstractMySQLDAO implements CompagniaDAO {
 			throw new Exception("Valore di input non ammesso.");
 		List<Compagnia> result = new ArrayList<>();
 		try (PreparedStatement ps = connection
-				.prepareStatement("select distinct c.id,ragionesociale,fatturatoannuo,datafondazione from compagnia c "
+				.prepareStatement("select distinct c.* from compagnia c "
 						+ "inner join impiegato i on c.id=i.compagnia_id where i.codicefiscale like ?;")) {
 
 			ps.setString(1, "%" + codFisInput + "%");

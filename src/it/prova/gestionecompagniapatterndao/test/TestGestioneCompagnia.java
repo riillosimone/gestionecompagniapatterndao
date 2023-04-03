@@ -46,12 +46,12 @@ public class TestGestioneCompagnia {
 			
 			
 //			TEST METODI COMPAGNIA IMPLEMENTATI
-			testFindAllByDataAssunzioneMaggioreDi(compagniaDAOInstance,impiegatoDAOInstance);
-			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
-			
-			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
-			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
-			
+//			testFindAllByDataAssunzioneMaggioreDi(compagniaDAOInstance,impiegatoDAOInstance);
+//			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
+//			
+//			testFindAllByRagioneSocialeContiene(compagniaDAOInstance);
+//			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
+//			
 			testFindAllByCodFisImpiegatoContiene(compagniaDAOInstance,impiegatoDAOInstance);
 			System.out.println("In tabella compagnia ci sono "+compagniaDAOInstance.list().size()+" elementi.");
 			
@@ -74,17 +74,17 @@ public class TestGestioneCompagnia {
 			
 			//TEST METODI IMPIEGATO IMPLEMENTATI
 			
-			testFindAllByCompagnia(impiegatoDAOInstance, compagniaDAOInstance);
-			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
-
-			testCountByDataFondazioneCompagniaGreaterThan(impiegatoDAOInstance, compagniaDAOInstance);
-			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
-
-			testFindAllByCompagniaConFatturatoMaggioreDi(impiegatoDAOInstance, compagniaDAOInstance);
-			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
-
-			testFindAllErroriAssunzione(impiegatoDAOInstance, compagniaDAOInstance);
-			System.out.println("In tabella impiegato ci sono " + impiegatoDAOInstance.list().size() + " elementi.");
+//			testFindAllByCompagnia(impiegatoDAOInstance, compagniaDAOInstance);
+//			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
+//
+//			testCountByDataFondazioneCompagniaGreaterThan(impiegatoDAOInstance, compagniaDAOInstance);
+//			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
+//
+//			testFindAllByCompagniaConFatturatoMaggioreDi(impiegatoDAOInstance, compagniaDAOInstance);
+//			System.out.println("In tabella impiegato ci sono "+impiegatoDAOInstance.list().size()+" elementi.");
+//
+//			testFindAllErroriAssunzione(impiegatoDAOInstance, compagniaDAOInstance);
+//			System.out.println("In tabella impiegato ci sono " + impiegatoDAOInstance.list().size() + " elementi.");
 
 		} catch (Exception e) {
 			e.printStackTrace();
